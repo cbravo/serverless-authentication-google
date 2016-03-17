@@ -31,7 +31,6 @@ export function callback(event, config, callback) {
       let d = JSON.parse(data);
       let url = utils.urlBuilder('https://www.googleapis.com/plus/v1/people/me', {access_token: d.access_token});
       request.get(url, (error, response, data) => {
-        console.log(error, response, data);
         if(!error) {
           callback(null, mapProfile(JSON.parse(data)));
         } else {

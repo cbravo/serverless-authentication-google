@@ -1,6 +1,6 @@
 {
   "name": "serverless-authentication-google",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Google module for Serverless Authentication",
   "main": "lib/index.js",
   "license": "MIT",

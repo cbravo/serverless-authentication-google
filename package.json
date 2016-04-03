@@ -17,9 +17,7 @@
     "url": "https://github.com/laardee/serverless-authentication-google"
   },
   "dependencies": {
-    "async": "^1.5.2",
-    "request": "^2.69.0",
-    "serverless-authentication": "^0.1.8"
+    "serverless-authentication": "https://github.com/laardee/serverless-authentication.git#develop-provider"
   },
   "devDependencies": {
     "babel-cli": "^6.6.4",

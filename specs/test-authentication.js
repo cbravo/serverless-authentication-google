@@ -66,4 +66,40 @@ describe('Google authentication', () => {
       })
     });
   });
+
+  describe('Callback, partial data', () => {
+    before(() => {
+      let providerConfig = config('google');
+      nock('https://www.googleapis.com')
+        .post('/oauth2/v4/token')
+        .query({
+          client_id: providerConfig.id,
+          redirect_uri: providerConfig.redirect_uri,
+          client_secret: providerConfig.secret,
+          code: 'code'
+        })
+        .reply(200, {
+          access_token: 'access-token-123'
+        });
+
+      nock('https://www.googleapis.com')
+        .get('/plus/v1/people/me')
+        .query({access_token: 'access-token-123'})
+        .reply(200, {
+          id: 'user-id-1',
+          displayName: 'Eetu Tuomala'
+        });
+    });
+    it('should return profile', (done) => {
+      let providerConfig = config('google');
+      auth.callback({code: 'code', state: 'state'}, providerConfig, (err, profile) => {
+        expect(profile.id).to.equal('user-id-1');
+        expect(profile.name).to.equal('Eetu Tuomala');
+        expect(profile.email).to.equal(null);
+        expect(profile.picture).to.equal(null);
+        expect(profile.provider).to.equal('google');
+        done(err);
+      })
+    });
+  });
 });

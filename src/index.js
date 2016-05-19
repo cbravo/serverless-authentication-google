@@ -1,26 +1,6 @@
 'use strict';
 
-import {Profile, Provider} from 'serverless-authentication';
-
-class GoogleProvider extends Provider {
-  signin({scope = 'profile', state}, callback){
-    let options = Object.assign(
-      {scope, state},
-      {signin_uri: 'https://accounts.google.com/o/oauth2/v2/auth', response_type: 'code'}
-    );
-    super.signin(options, callback);
-  }
-
-  callback(event, callback){
-    var options = {
-      authorization_uri: 'https://www.googleapis.com/oauth2/v4/token',
-      profile_uri: 'https://www.googleapis.com/plus/v1/people/me',
-      profileMap: mapProfile,
-      authorizationMethod: 'POST'
-    };
-    super.callback(event, options, {authorization: {grant_type: 'authorization_code'}}, callback);
-  }
-}
+import { Profile, Provider } from 'serverless-authentication';
 
 function mapProfile(response) {
   return new Profile({
@@ -33,10 +13,35 @@ function mapProfile(response) {
   });
 }
 
-export function signin(config, options, callback) {
-  (new GoogleProvider(config)).signin(options, callback);
+class GoogleProvider extends Provider {
+  signinHandler({ scope = 'profile', state }, callback) {
+    const options = Object.assign(
+      { scope, state },
+      { signin_uri: 'https://accounts.google.com/o/oauth2/v2/auth', response_type: 'code' }
+    );
+    super.signin(options, callback);
+  }
+
+  callbackHandler(event, callback) {
+    const options = {
+      authorization_uri: 'https://www.googleapis.com/oauth2/v4/token',
+      profile_uri: 'https://www.googleapis.com/plus/v1/people/me',
+      profileMap: mapProfile,
+      authorizationMethod: 'POST'
+    };
+    super.callback(
+      event,
+      options,
+      { authorization: { grant_type: 'authorization_code' } },
+      callback
+    );
+  }
 }
 
-export function callback(event, config, callback) {
-  (new GoogleProvider(config)).callback(event, callback);
+export function signinHandler(config, options, callback) {
+  (new GoogleProvider(config)).signinHandler(options, callback);
+}
+
+export function callbackHandler(event, config, callback) {
+  (new GoogleProvider(config)).callbackHandler(event, callback);
 }

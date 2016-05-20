@@ -3,14 +3,14 @@
 import { Profile, Provider } from 'serverless-authentication';
 
 function mapProfile(response) {
-  return new Profile({
-    id: response.id,
+  const overwrites = {
     name: response.displayName,
     email: response.emails ? response.emails[0].value : null,
     picture: response.image ? response.image.url : null,
     provider: 'google',
     _raw: response
-  });
+  };
+  return new Profile(Object.assign(response, overwrites));
 }
 
 class GoogleProvider extends Provider {

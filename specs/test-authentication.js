@@ -72,7 +72,7 @@ describe('Google authentication', () => {
         expect(profile.email).to.equal('email@test.com');
         expect(profile.picture).to.equal('https://avatars3.githubusercontent.com/u/4726921?v=3&s=460');
         expect(profile.provider).to.equal('google');
-        expect(profile._raw.access_token).to.equal('access-token-123');
+        expect(profile.at_hash).to.equal('access-token-123');
         done(err);
       })
     });

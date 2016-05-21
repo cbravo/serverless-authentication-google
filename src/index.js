@@ -7,9 +7,9 @@ function mapProfile(response) {
     name: response.displayName,
     email: response.emails ? response.emails[0].value : null,
     picture: response.image ? response.image.url : null,
-    provider: 'google',
-    _raw: response
+    provider: 'google'
   };
+
   return new Profile(Object.assign(response, overwrites));
 }
 
@@ -19,6 +19,7 @@ class GoogleProvider extends Provider {
       { scope, state },
       { signin_uri: 'https://accounts.google.com/o/oauth2/v2/auth', response_type: 'code' }
     );
+
     super.signin(options, callback);
   }
 
@@ -29,6 +30,7 @@ class GoogleProvider extends Provider {
       profileMap: mapProfile,
       authorizationMethod: 'POST'
     };
+
     super.callback(
       event,
       options,
@@ -38,10 +40,13 @@ class GoogleProvider extends Provider {
   }
 }
 
-export function signinHandler(config, options, callback) {
+const signinHandler = (config, options, callback) =>
   (new GoogleProvider(config)).signinHandler(options, callback);
-}
 
-export function callbackHandler(event, config, callback) {
+const callbackHandler = (event, config, callback) =>
   (new GoogleProvider(config)).callbackHandler(event, callback);
-}
+
+exports.signinHandler = signinHandler;
+exports.signin = signinHandler; // old syntax, remove later
+exports.callbackHandler = callbackHandler;
+exports.callback = callbackHandler; // old syntax, remove later

@@ -15,11 +15,19 @@ describe('Google authentication', () => {
       });
     });
 
-    it('tests signin with scope and state params', () => {
+    it('tests signin with scope, state and access_type params', () => {
       const providerConfig = config('google');
-      auth.signinHandler(providerConfig, {scope: 'profile email', state: '123456'}, (err, data) => {
+      auth.signinHandler(providerConfig, {scope: 'profile email', state: '123456', access_type: 'offline'}, (err, data) => {
         expect(err).to.be.null;
-        expect(data.url).to.equal('https://accounts.google.com/o/oauth2/v2/auth?client_id=app-id&redirect_uri=https://api-id.execute-api.eu-west-1.amazonaws.com/dev/callback/google&response_type=code&scope=profile email&state=123456');
+        expect(data.url).to.equal('https://accounts.google.com/o/oauth2/v2/auth?client_id=app-id&redirect_uri=https://api-id.execute-api.eu-west-1.amazonaws.com/dev/callback/google&response_type=code&scope=profile email&state=123456&access_type=offline');
+      });
+    });
+
+    it('tests signin with scope, state, access_type and prompt params', () => {
+      const providerConfig = config('google');
+      auth.signinHandler(providerConfig, {scope: 'profile email', state: '123456', access_type: 'offline', prompt: 'consent'}, (err, data) => {
+        expect(err).to.be.null;
+        expect(data.url).to.equal('https://accounts.google.com/o/oauth2/v2/auth?client_id=app-id&redirect_uri=https://api-id.execute-api.eu-west-1.amazonaws.com/dev/callback/google&response_type=code&scope=profile email&state=123456&access_type=offline&prompt=consent');
       });
     });
 

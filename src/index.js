@@ -14,14 +14,13 @@ function mapProfile(response) {
 }
 
 class GoogleProvider extends Provider {
-  signinHandler({ scope = 'profile', state , access_type = 'online', prompt}, callback) {
-    let variable_options = { scope, state, access_type };
-    // Not sure how to NOT-ADD prompt if its undefined...
-    if( prompt ) {
-      variable_options = Object.assign(variable_options, { prompt: prompt });
+  signinHandler({ scope = 'profile', state, access_type = 'online', prompt }, callback) {
+    const variableOptions = { scope, state, access_type };
+    if (prompt) {
+      Object.assign(variableOptions, { prompt });
     }
     const options = Object.assign(
-      variable_options,
+      variableOptions,
       { signin_uri: 'https://accounts.google.com/o/oauth2/v2/auth', response_type: 'code' }
     );
 

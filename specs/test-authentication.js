@@ -11,7 +11,7 @@ describe('Google authentication', () => {
       const providerConfig = config('google');
       auth.signinHandler(providerConfig, {}, (err, data) => {
         expect(err).to.be.null;
-        expect(data.url).to.equal('https://accounts.google.com/o/oauth2/v2/auth?client_id=app-id&redirect_uri=https://api-id.execute-api.eu-west-1.amazonaws.com/dev/callback/google&response_type=code&scope=profile');
+        expect(data.url).to.equal('https://accounts.google.com/o/oauth2/v2/auth?client_id=app-id&redirect_uri=https://api-id.execute-api.eu-west-1.amazonaws.com/dev/callback/google&response_type=code&scope=profile&access_type=online');
       });
     });
 
@@ -35,7 +35,7 @@ describe('Google authentication', () => {
       const providerConfig = config('google');
       auth.signin(providerConfig, {}, (err, data) => {
         expect(err).to.be.null;
-        expect(data.url).to.equal('https://accounts.google.com/o/oauth2/v2/auth?client_id=app-id&redirect_uri=https://api-id.execute-api.eu-west-1.amazonaws.com/dev/callback/google&response_type=code&scope=profile');
+        expect(data.url).to.equal('https://accounts.google.com/o/oauth2/v2/auth?client_id=app-id&redirect_uri=https://api-id.execute-api.eu-west-1.amazonaws.com/dev/callback/google&response_type=code&scope=profile&access_type=online');
       });
     });
   });

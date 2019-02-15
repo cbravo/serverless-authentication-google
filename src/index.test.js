@@ -66,19 +66,13 @@ describe('Google authentication', () => {
         })
 
       nock('https://www.googleapis.com')
-        .get('/plus/v1/people/me')
+        .get('/userinfo/v2/me')
         .query({ access_token: 'access-token-123' })
         .reply(200, {
           id: 'user-id-1',
-          displayName: 'Eetu Tuomala',
-          emails: [
-            {
-              value: 'email@test.com'
-            }
-          ],
-          image: {
-            url: 'https://avatars3.githubusercontent.com/u/4726921?v=3&s=460'
-          }
+          name: 'Eetu Tuomala',
+          email: 'email@test.com',
+          picture: 'https://avatars3.githubusercontent.com/u/4726921?v=3&s=460'
         })
     })
 
@@ -88,12 +82,11 @@ describe('Google authentication', () => {
         { code: 'code', state: 'state' },
         providerConfig
       )
+      console.log(profile)
       expect(profile.id).toBe('user-id-1')
       expect(profile.name).toBe('Eetu Tuomala')
       expect(profile.email).toBe('email@test.com')
-      expect(profile.picture).toBe(
-        'https://avatars3.githubusercontent.com/u/4726921?v=3&s=460'
-      )
+      expect(profile.picture).toBe('https://avatars3.githubusercontent.com/u/4726921?v=3&s=460')
       expect(profile.provider).toBe('google')
     })
   })

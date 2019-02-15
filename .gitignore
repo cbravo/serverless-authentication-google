@@ -8,4 +8,4 @@ pids
 
 node_modules
 
-lib
+# lib

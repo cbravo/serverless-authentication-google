@@ -2,9 +2,9 @@ import { Profile, Provider } from 'serverless-authentication'
 
 function mapProfile(response) {
   const overwrites = {
-    name: response.displayName,
-    email: response.emails ? response.emails[0].value : null,
-    picture: response.image ? response.image.url : null,
+    name: response.name,
+    email: response.email,
+    picture: response.picture,
     provider: 'google'
   }
 
@@ -30,7 +30,7 @@ class GoogleProvider extends Provider {
   callbackHandler(event) {
     const options = {
       authorization_uri: 'https://www.googleapis.com/oauth2/v4/token',
-      profile_uri: 'https://www.googleapis.com/plus/v1/people/me',
+      profile_uri: 'https://www.googleapis.com/userinfo/v2/me',
       profileMap: mapProfile,
       authorizationMethod: 'POST'
     }

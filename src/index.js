@@ -4,9 +4,9 @@ import { Profile, Provider } from 'serverless-authentication';
 
 function mapProfile(response) {
   const overwrites = {
-    name: response.displayName,
-    email: response.emails ? response.emails[0].value : null,
-    picture: response.image ? response.image.url : null,
+    name: response.name,
+    email: response.email,
+    picture: response.picture,
     provider: 'google'
   };
 
@@ -14,7 +14,9 @@ function mapProfile(response) {
 }
 
 class GoogleProvider extends Provider {
-  signinHandler({ scope = 'profile', state, access_type = 'online', prompt }, callback) {
+  signinHandler({
+ scope = 'profile', state, access_type = 'online', prompt 
+}, callback) {
     const variableOptions = { scope, state, access_type };
     if (prompt) {
       Object.assign(variableOptions, { prompt });
@@ -30,7 +32,7 @@ class GoogleProvider extends Provider {
   callbackHandler(event, callback) {
     const options = {
       authorization_uri: 'https://www.googleapis.com/oauth2/v4/token',
-      profile_uri: 'https://www.googleapis.com/plus/v1/people/me',
+      profile_uri: 'https://www.googleapis.com/userinfo/v2/me',
       profileMap: mapProfile,
       authorizationMethod: 'POST'
     };
@@ -44,11 +46,9 @@ class GoogleProvider extends Provider {
   }
 }
 
-const signinHandler = (config, options, callback) =>
-  (new GoogleProvider(config)).signinHandler(options, callback);
+const signinHandler = (config, options, callback) => (new GoogleProvider(config)).signinHandler(options, callback);
 
-const callbackHandler = (event, config, callback) =>
-  (new GoogleProvider(config)).callbackHandler(event, callback);
+const callbackHandler = (event, config, callback) => (new GoogleProvider(config)).callbackHandler(event, callback);
 
 exports.signinHandler = signinHandler;
 exports.signin = signinHandler; // old syntax, remove later
